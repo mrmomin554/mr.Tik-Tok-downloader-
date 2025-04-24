@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💚 MR-MOMIN's TikTok Downloader 🎀</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Pacifico&family=Oswald:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #27AE60, #145A32);
+            color: #E8F6F3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-family: 'Lobster', cursive;
+            font-size: 36px;
+            color: #FFD580;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: 'Pacifico', cursive;
+            font-size: 18px;
+            color: #FFF8F8;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 20px;
+            background: #E8F6F3;
+            color: #145A32;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+            box-shadow: 0px 2px 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .download-btn {
+            font-family: 'Oswald', sans-serif;
+            font-size: 18px;
+            text-transform: uppercase;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            color: white;
+            background: #145A32;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #FFD580;
+            color: #145A32;
+            box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.8);
+        }
+
+        #video-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.6);
+        }
+
+        .dev-message {
+            font-family: 'Pacifico', cursive;
+            font-size: 16px;
+            color: #FFD580;
+            margin-top: 15px;
+        }
+
+        .highlight {
+            font-family: 'Oswald', sans-serif;
+            color: #FFF8F8;
+            font-weight: bold;
+        }
+
+        .admin-btn {
+            font-family: 'Oswald', sans-serif;
+            margin-top: 15px;
+            padding: 12px;
+            width: 100%;
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            background: white;
+            color: #145A32;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>💚 MR-MOMIN's TikTok Downloader 🎀</h1>
+        <p class="subtitle">🌿 TikTok লিঙ্ক দিন এবং ওয়াটারমার্ক ছাড়া ভিডিও ডাউনলোড করুন! ✨</p>
+
+        <input type="text" id="url" placeholder="🎀 TikTok লিঙ্ক দিন...">
+        <button class="download-btn" onclick="fetchVideo()">📥 ডাউনলোড</button>
+
+        <div id="video-container">
+            <video id="tiktok-video" controls></video>
+            <button class="download-btn" id="download-video">📥 ভিডিও ডাউনলোড</button>
+            <button class="download-btn" id="download-audio">🎵 অডিও ডাউনলোড</button>
+        </div>
+
+        <p class="dev-message">👑 Developed by <span class="highlight">MR-MOMIN</span> | Stay Cute & Safe 💚</p>
+        <button class="admin-btn" onclick="redirectToTelegram()">✉️ অ্যাডমিনের সাথে যোগাযোগ</button>
+    </div>
+
+    <script>
+        async function fetchVideo() {
+            const url = document.getElementById('url').value;
+            if (!url) {
+                alert("🎀 অনুগ্রহ করে একটি বৈধ TikTok লিঙ্ক দিন!");
+                return;
+            }
+
+            try {
+                let response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
+                let data = await response.json();
+
+                if (data && data.data && data.data.play) {
+                    const videoUrl = data.data.play;
+                    const audioUrl = data.data.music;
+
+                    document.getElementById('tiktok-video').src = videoUrl;
+                    document.getElementById('video-container').style.display = 'block';
+
+                    document.getElementById('download-video').onclick = function () {
+                        let a = document.createElement('a');
+                        a.href = videoUrl;
+                        a.download = "tiktok-video.mp4";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    };
+
+                    document.getElementById('download-audio').onclick = function () {
+                        let a = document.createElement('a');
+                        a.href = audioUrl;
+                        a.download = "tiktok-audio.mp3";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    };
+                } else {
+                    alert("🎀 ভিডিও লোড করতে সমস্যা হয়েছে, আবার চেষ্টা করুন!");
+                }
+            } catch (error) {
+                alert("🎀 কোনো সমস্যা হয়েছে! লিঙ্ক চেক করুন।");
+            }
+        }
+
+        function redirectToTelegram() {
+            window.location.href = "https://t.me/MRMOMIN112";
+        }
+    </script>
+
+</body>
+</html>
